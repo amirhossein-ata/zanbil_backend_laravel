@@ -23,4 +23,5 @@ Route::middleware(['auth:api'])->group(function(){
     Route::resource('customer', 'CustomerController');
     Route::resource('service', 'ServiceController');
     Route::resource('timetable', 'TimetableController');
+    Route::resource('reserve', 'ReserveController');
 });

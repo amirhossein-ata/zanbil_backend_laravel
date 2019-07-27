@@ -51,12 +51,16 @@ class TimetableController extends Controller
             ], 400);
         }
 
+        $start_day = Carbon::parse($request->start_day);
+        $start_middle_reset = Carbon::parse($request->start_middle_rest);
+        $end_middle_rest = Carbon::parse($request->end_middle_rest);
+        $end_day = Carbon::parse($request->end_day);
         $timetable = new Timetable([
             'service_id' => $request->service_id,
-            'start_day' => $request->start_day,
-            'start_middle_rest' => $request->start_middle_rest,
-            'end_middle_rest' => $request->end_middle_rest,
-            'end_day' => $request->end_day,
+            'start_day' => $start_day,
+            'start_middle_rest' => $start_middle_reset,
+            'end_middle_rest' => $end_middle_rest,
+            'end_day' => $end_day,
             'time_length' => $request->time_length,
             'gap_length' => $request->gap_length
         ]);
