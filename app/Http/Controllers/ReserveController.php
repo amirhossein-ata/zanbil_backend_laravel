@@ -87,6 +87,13 @@ class ReserveController extends Controller
         $end_time = Carbon::parse($request->end_time);
         $reserve_date = Carbon::parse($request->reserve_date);
 
+        // check if start time is not greater that end_time
+        if($start_time > $end_time) {
+            return response()->json([
+                'message' => 'start time can not be greater that end time'
+            ]);
+        }
+
         // check if service does'nt have any other reservation in that time
         if(self::isServiceTimeFull($start_time, $end_time, $reserve_date, $request->service_id)){
             return response()->json([
@@ -122,7 +129,7 @@ class ReserveController extends Controller
      */
     public function show(Reserve $reserve)
     {
-        return new ReserveResource($reserve);
+        return new ReserveResource($reserve);   
     }
 
     /**
