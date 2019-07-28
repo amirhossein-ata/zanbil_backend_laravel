@@ -30,18 +30,7 @@ class CustomerController extends Controller
     {
         return new CustomerResource($customer);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
