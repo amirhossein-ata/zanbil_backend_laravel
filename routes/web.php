@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::middleware(['auth:api'])->group(function(){
     Route::resource('business', 'BusinessController');
     Route::post('business/{business}','BusinessController@update');
-
+    Route::post('user/{user}', 'AuthController@update');
     Route::resource('manager', 'ManagerController');
     Route::resource('employer', 'EmployerController');
     Route::resource('customer', 'CustomerController');

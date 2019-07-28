@@ -6,9 +6,11 @@ use App\Manager;
 use App\Employer;
 use App\Customer;
 use App\User;
+use App\Business;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -38,6 +40,12 @@ class AuthController extends Controller
             ]);
             $manager->save();
         } else if ($request->type === 'employer') {
+            $business = Business::find($request->business_id);
+            if($business === null) {
+                return response()->json([
+                    'message' => 'business no found'
+                ], 400);
+            }
             $employer = new Employer([
                 'user_id' => $user->getAttributes()["id"],
                 'business_id' => $request->business_id,
@@ -84,9 +92,38 @@ class AuthController extends Controller
         ]);
     }
 
-    public function user(Request $request)
-    {
-        dd('got');
-        return response()->json($request->user());
+    public function update(Request $request, User $user) {
+        if($request->newPassword !== null) {
+            if($request->lastPassword === null) {
+                return response()->json([
+                    'message' => 'last password should be filled'
+                ], 400);
+            }
+            if(!Hash::check($request->lastPassword , $user->password)){
+                return response()->json([
+                    'message' => 'last password is wrong'
+                ], 400);
+            }
+            
+            $user->password = bcrypt($request->newPassword);
+        }
+        if($request->name !== null) {
+            $user->name = $request->name;
+        }
+        if($request->email !== null) {
+            $user->email = $request->email;
+        }
+        if($request->phone_number !== null) {
+            $user->phone_number = $request->phone_number;
+        }
+        if($request->address !== null) {
+            $user->address = $request->address;
+        }
+
+        return response()->json([
+            'user' => $user,
+
+        ], 200);
+  
     }
 }
