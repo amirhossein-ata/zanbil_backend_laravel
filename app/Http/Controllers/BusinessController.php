@@ -29,20 +29,21 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {  
+        $manager = $request->user()->manager;
         $request->validate([
             'name' => 'required|string',
             'description' => 'string',
             'address' => 'required|string',
-            'manager_id' => 'required|integer',
         ]);
         $business = new Business([
             'name' => $request->name,
             'description' => $request->description,
             'address' => $request->address,
-            'manager_id' => $request->manager_id,
+            'manager_id' => $manager->id,
             'price' => 0
         ]);
         $business->save();
+        return response()->json(['message' => 'business created successfully'], 200);
     }
 
     /**

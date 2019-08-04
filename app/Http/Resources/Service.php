@@ -22,7 +22,6 @@ class Service extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'address' => $this->address,
-            'business' => new Business($this->business),
             'employer' => new Employer($this->employer),
             'timetable' => new Timetable($this->timetable)
         ];

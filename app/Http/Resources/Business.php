@@ -21,7 +21,9 @@ class Business extends JsonResource
             'description' => $this->description,
             'price'=> $this->price,
             'address' => $this->address,
-            'manager' => new ManagerResource($this->manager)
+            'manager' => new ManagerResource($this->manager),
+            'services' => new ServiceCollection($this->services),
+            'employers' => new EmployerCollection($this->employers)
         ];
     }
 }

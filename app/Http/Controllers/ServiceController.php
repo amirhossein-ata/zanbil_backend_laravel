@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Timetable;
 use App\Service;
 use Illuminate\Http\Request;
 use App\Http\Resources\Service as ServiceResource;
 use App\Http\Resources\ServiceCollection;
+use Carbon\Carbon;
 
 class ServiceController extends Controller
 {
@@ -32,8 +34,13 @@ class ServiceController extends Controller
             'description' => 'string',
             'business_id' => 'required|integer',
             'employer_id' => 'required|integer',
-            'price' => 'integer',
             'address' => 'required|string',
+            'start_day' => 'required|string',
+            'start_middle_rest' => 'required|string',
+            'end_middle_rest' => 'required|string',
+            'end_day' => 'required|string',
+            'time_length' => 'required|integer',
+            'gap_length' => 'required|integer'
         ]);
         $service = new Service([
             'name' => $request->name,
@@ -44,6 +51,21 @@ class ServiceController extends Controller
             'address' => $request->address,
         ]);
         $service->save();
+
+        $start_day = Carbon::parse($request->start_day);
+        $start_middle_reset = Carbon::parse($request->start_middle_rest);
+        $end_middle_rest = Carbon::parse($request->end_middle_rest);
+        $end_day = Carbon::parse($request->end_day);
+        $timetable = new Timetable([
+            'service_id' => $service->getAttributes()["id"],
+            'start_day' => $start_day,
+            'start_middle_rest' => $start_middle_reset,
+            'end_middle_rest' => $end_middle_rest,
+            'end_day' => $end_day,
+            'time_length' => $request->time_length,
+            'gap_length' => $request->gap_length
+        ]);
+        $timetable->save();
         return response()->json([
             'message' => 'Service created successfully'
         ], 200);
