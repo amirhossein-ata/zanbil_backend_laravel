@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\User as UserResource;
 
 class AuthController extends Controller
 {
@@ -125,5 +126,9 @@ class AuthController extends Controller
 
         ], 200);
   
+    }
+
+    public function info (Request $request) {
+        return new UserResource($request->user());
     }
 }

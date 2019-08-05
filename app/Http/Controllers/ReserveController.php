@@ -61,32 +61,33 @@ class ReserveController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'service_id' => 'required|integer',
-            'customer_id' => 'required|integer',
             'start_time' => 'required|string',
             'end_time' => 'required|string',
             'reserve_date' => 'required|string'
         ]);
         
+
+        $customer = $request->user()->customer;
+        if($customer === null) {
+            $customer = new Customer([
+                'user_id' => $request->user()->id,
+            ]);
+            $customer->save();
+        }
+        
         $service = Service::find($request->service_id);
-        $customer = Customer::find($request->customer_id);
-            
+       
         if($service === null) {
             return response()->json([
                 'message' => 'service not found'
             ], 400);
         }
-        if($customer === null) {
-            return response()->json([
-                'message' => 'customer not found'
-            ], 400);
-        }
+     
         $start_time = Carbon::parse($request->start_time);
         $end_time = Carbon::parse($request->end_time);
         $reserve_date = Carbon::parse($request->reserve_date);
-
         // check if start time is not greater that end_time
         if($start_time > $end_time) {
             return response()->json([
@@ -102,7 +103,7 @@ class ReserveController extends Controller
         }
        
         // check if customer does'nt have any other reservation in that time
-        if(self::isCustomerTimeFull($start_time, $end_time, $reserve_date, $request->customer_id)){
+        if(self::isCustomerTimeFull($start_time, $end_time, $reserve_date, $customer->id)){
             return response()->json([
                 'message' => 'that time is full for customer'
             ], 400);
@@ -110,7 +111,7 @@ class ReserveController extends Controller
        
         $reserve = new Reserve([
             'service_id' => $request->service_id,
-            'customer_id' => $request->customer_id,
+            'customer_id' => $customer->id,
             'start_time' => $start_time,
             'end_time' => $end_time,
             'reserve_date' => $reserve_date,
@@ -132,17 +133,7 @@ class ReserveController extends Controller
         return new ReserveResource($reserve);   
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Reserve  $reserve
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reserve $reserve)
-    {
-        //
-    }
-
+  
     /**
      * Update the specified resource in storage.
      *

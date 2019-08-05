@@ -16,9 +16,12 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ServiceCollection(Service::all());
+        if($request->employerID === null){
+            return new ServiceCollection(Service::all());
+        }
+        return new ServiceCollection(Service::all()->where('employer_id', $request->employerID));
     }
 
     /**
