@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Manager;
 use App\Business;
 use Illuminate\Http\Request;
 use App\Http\Resources\Business as BusinessResource;
@@ -30,10 +31,16 @@ class BusinessController extends Controller
     public function store(Request $request)
     {  
         $manager = $request->user()->manager;
+        if($manager === null) {
+            $manager = new Manager([
+                'user_id' => $request->user()->id,
+            ]);
+            $manager->save();
+        }
         $request->validate([
             'name' => 'required|string',
             'description' => 'string',
-            'address' => 'required|string',
+            'address' => 'string',
         ]);
         $business = new Business([
             'name' => $request->name,
@@ -43,7 +50,7 @@ class BusinessController extends Controller
             'price' => 0
         ]);
         $business->save();
-        return response()->json(['message' => 'business created successfully'], 200);
+        return response()->json(['message' => 'business created successfully'], 201);
     }
 
     /**

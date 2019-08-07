@@ -8,12 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    // use RefreshDatabase;
 
     //  public function test_signup_right_credentials_customer(){
     //     $this->json('POST', 'api/auth/signup', 
@@ -127,7 +121,10 @@ class UserTest extends TestCase
     }
 
     public function test_login_wrong_credentials(){
-        $this->json('POST', 'api/auth/login', ['email' => 'managerr@gmail.com', 'password' => '1234'  ]) -> assertStatus(401);
+        $this->json('POST', 'api/auth/login', 
+            ['email' => 'managerr@gmail.com', 'password' => '1234'  ]) 
+            -> assertStatus(401)
+            -> assertJson(['message' => 'Unauthorized']);
     }
 
     public function test_login_right_credentials(){
