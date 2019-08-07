@@ -18,7 +18,7 @@ class Reserve extends JsonResource
             'reserve_date' => $this->reserve_date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            'service' => $this->service_id,
+            'service' => new Service($this->service),
             'customer' => $this->customer_id
         ];
     }

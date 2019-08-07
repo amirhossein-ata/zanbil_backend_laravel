@@ -18,9 +18,9 @@ class User extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
-            'business' => $this->manager ? $this->manager->business : null,
-            'services' => $this->employer ? $this->employer->services : null,
-            'reserves' => $this->customer ? $this->customer->reserves : null
+            'business' => $this->manager ?  new Business($this->manager->business) : null,
+            'services' => $this->employer ? new ServiceCollection($this->employer->services) : null,
+            'reserves' => $this->customer ? new ReserveCollection($this->customer->reserves) : null
         ];
     }
 }
