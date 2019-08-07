@@ -4,6 +4,11 @@
             "database": "./database/database.sqlite",
             "dialect": "SQLite",
             "name": "zanbil"
+        },
+        {
+            "database": "./database/test_database.sqlite",
+            "dialect": "SQLite",
+            "name": "test"
         }
     ]
 }
