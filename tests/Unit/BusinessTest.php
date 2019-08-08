@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\Business;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,8 +38,68 @@ class BusinessTest extends TestCase
         ];
         
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user, 'api')->json('POST', '/business',$data)->assertStatus(422);
+        $this->actingAs($user, 'api')->json('POST', '/business',$data)->assertStatus(422);
         
+    }
+
+    public function test_get_all_business_not_authenticated(){
+        $this->json('GET', '/business')
+        -> assertStatus(401);
+    }
+
+    public function test_get_all_businesses_info(){
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user, 'api')->json('GET', '/business')
+        -> assertStatus(200)
+        -> assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'description',
+                    'price',
+                    'address',
+                    'manager',
+                    'services',
+                    'employers'      
+                ]
+            ]
+        ]);
+    
+    }
+
+    public function test_get_single_business_not_authenticated(){
+        $this->json('GET','/business/1')
+        ->assertStatus(401); 
+    }
+
+    public function test_get_single_business_info(){
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user, 'api')->json('GET', '/business/1')
+        -> assertStatus(200)
+        -> assertJson([
+            'data' => [
+                'id'=> 1,
+                "name" => "business test name",
+                "description" => "business_test_description",
+                "price" => "0.0",
+                "address" => "business test address",
+                "manager" => [
+                    "id" => 2,
+                    "name"=> "Marcelle Lang",
+                    "email" => "dorothy67@example.org",
+                    "phone" => "985.267.5577 x68671"
+                ],
+                "services" => [
+                    "data" => []
+                ],
+                "employers"=> [
+                    "data" => []
+                ]
+            ]
+        ]);
     }
     
 }

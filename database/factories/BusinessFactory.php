@@ -21,6 +21,7 @@ $factory->define(Business::class, function (Faker $faker) {
         'name' => $faker->name,
         'description' => $faker->name,
         'price' => $faker->randomDigitNotNull,
-        'address' => $faker->text($maxNbChars = 200, $indexSize = 2)
+        'address' => $faker->text($maxNbChars = 200, $indexSize = 2),
+        'manager_id' => 1
     ];
 });
