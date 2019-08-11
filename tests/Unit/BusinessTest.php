@@ -10,11 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BusinessTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    public function test_add_business_success(){
+        $data = [
+            'name' => "business test name",
+            'description' => "business_test_description",
+            'price' => 0,
+            'address' => 'business test address'
+        ];
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user, 'api')->json('POST', '/business',$data)->assertStatus(201);
+    }
     public function test_add_business_not_authenticated()
     {
         $data = [
@@ -80,22 +86,22 @@ class BusinessTest extends TestCase
         $response = $this->actingAs($user, 'api')->json('GET', '/business/1')
         -> assertStatus(200)
         -> assertJson([
-            'data' => [
-                'id'=> 1,
+            "data" => [
+                "id"=> 1,
                 "name" => "business test name",
                 "description" => "business_test_description",
                 "price" => "0.0",
                 "address" => "business test address",
                 "manager" => [
-                    "id" => 2,
-                    "name"=> "Marcelle Lang",
-                    "email" => "dorothy67@example.org",
-                    "phone" => "985.267.5577 x68671"
+                    "id" => 4,
+                    "name" => "Marina Franecki",
+                    "email" => "king.elenora@example.com",
+                    "phone" => "(842) 550-0615 x5292"
                 ],
                 "services" => [
                     "data" => []
                 ],
-                "employers"=> [
+                "employers" => [
                     "data" => []
                 ]
             ]

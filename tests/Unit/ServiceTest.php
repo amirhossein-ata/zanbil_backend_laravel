@@ -10,11 +10,6 @@ use App\Employer;
 
 class ServiceTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
     public function test_create_service_success(){
         $user = factory(User::class)->create();
         $employer = new Employer([
@@ -248,23 +243,24 @@ class ServiceTest extends TestCase
                 "price" => "0.0",
                 "address" => "service address test",
                 "employer" => [
-                    "id" => 2,
-                    "name" => "Vanessa Johns",
-                    "email" => "ncrooks@example.net",
-                    "phone" => "682.527.1454 x217",
-                    "start_date" => "2019-08-08T07:26:19.000000Z",
+                    "id" => 1,
+                    "name" => "Zachery Welch",
+                    "email" => "hbogan@example.net",
+                    "phone" => "(620) 681-9364 x48649",
+                    "start_date" => "2019-08-11T08:47:46.000000Z",
                     "business_name" => "business test name"
                 ],
                 "timetable" => [
-                    "start_day" => "2019-08-08 08:30:00",
-                    "end_day" => "2019-08-08 18:00:00",
-                    "start_middle_rest" => "2019-08-08 12:00:00",
-                    "end_middle_rest" => "2019-08-08 13:00:00",
+                    "start_day" => "2019-08-11T08:30:00.000000Z",
+                    "end_day" => "2019-08-11T18:00:00.000000Z",
+                    "start_middle_rest" => "2019-08-11T12:00:00.000000Z",
+                    "end_middle_rest" => "2019-08-11T13:00:00.000000Z",
                     "time_length" => "90",
                     "gap_length" => "15",
                     "service_id" => "1"
                 ]
             ]
+        
         ]);
     }
 }
