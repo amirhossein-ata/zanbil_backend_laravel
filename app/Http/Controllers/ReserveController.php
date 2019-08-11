@@ -30,7 +30,6 @@ class ReserveController extends Controller
 
     public function isCustomerTimeFull($start_time, $end_time, $reserve_date, $customer_id){
         $reserves = Reserve::where('customer_id', $customer_id)->get();
-        // dd($reserves);
         $duplicate_reserve = $reserves->search(function ($value) use($start_time, $end_time, $reserve_date) {
             return  Carbon::parse($value->start_time)->equalTo($start_time) &&
                     Carbon::parse($value->end_time)->equalTo($end_time) &&
